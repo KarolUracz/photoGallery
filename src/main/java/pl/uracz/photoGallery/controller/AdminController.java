@@ -46,19 +46,11 @@ public class AdminController {
         return userService.findAllByRoleUser();
     }
 
-    @PostMapping("/uploadFiles")
-    public String uploadFiles(@AuthenticationPrincipal CurrentUser currentUser, @RequestParam(name = "files") MultipartFile[] files,
-                              @RequestParam("username") String username) {
-        for (MultipartFile file : files) {
-            fileStorageService.storeFile(file, username);
-        }
-        return "redirect:/admin/panel";
-    }
-
     @PostMapping("/addGallery")
     public String addGallery(@AuthenticationPrincipal CurrentUser currentUser,
                              @ModelAttribute PhotoGallery photoGallery) {
         photoGalleryService.save(photoGallery);
+        fileStorageService.createGalleryDirectory(photoGallery.getOwner().getUsername());
         return "redirect:/admin/panel";
     }
 
@@ -75,7 +67,6 @@ public class AdminController {
                             @RequestParam MultipartFile[] files) {
         for (MultipartFile file : files) {
             fileStorageService.storeFile(file, photoGallery.getOwner().getUsername());
-            imageService.saveImage(file);
         }
         return "redirect:/admin/panel";
     }

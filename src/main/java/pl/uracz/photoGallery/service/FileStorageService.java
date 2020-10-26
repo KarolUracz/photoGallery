@@ -5,4 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FileStorageService {
 
     public void storeFile(MultipartFile file, String username);
+
+    public void createGalleryDirectory(String username);
 }

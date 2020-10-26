@@ -5,14 +5,6 @@
     <title>Administrator control panel</title>
 </head>
 <body>
-<div>
-    <h3>Upload files</h3>
-    <form id="uploadFiles" name="uploadFiles" method="post" th:action="@{/admin/uploadFiles}"
-          enctype="multipart/form-data">
-        <input type="file" name="files" multiple required/>
-        <button type="submit">Upload</button>
-    </form>
-</div>
 
 <div>
     <h3>Galleries</h3>
@@ -33,6 +25,7 @@
         </tbody>
     </table>
 </div>
+
 <div>
     <h3>Add gallery</h3>
     <form id="addGallery" name="addGallery" method="post" th:action="@{/admin/addGallery}" th:object="${photoGallery}"

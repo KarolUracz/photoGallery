@@ -8,8 +8,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private PhotoGallery photoGallery;
+    private String url;
 
     public Long getId() {
         return id;
@@ -19,11 +18,11 @@ public class Image {
         this.id = id;
     }
 
-    public PhotoGallery getPhotoGallery() {
-        return photoGallery;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPhotoGallery(PhotoGallery photoGallery) {
-        this.photoGallery = photoGallery;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

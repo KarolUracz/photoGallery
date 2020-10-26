@@ -33,16 +33,14 @@ public class InitDataFixture {
     }
 
     public void initUsers() {
-
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(roleRepository.findByName("ROLE_ADMIN"));
-
         User admin = new User();
         admin.setUsername("admin");
         admin.setPassword("admin");
         admin.setEnabled(1);
         admin.setRoles(adminRoles);
-        userService.saveUser(admin);
+        userService.save(admin);
 
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(roleRepository.findByName("ROLE_USER"));
@@ -53,6 +51,6 @@ public class InitDataFixture {
         user.setEnabled(1);
         user.setRoles(userRoles);
 
-        userService.saveUser(user);
+        userService.save(user);
     }
 }

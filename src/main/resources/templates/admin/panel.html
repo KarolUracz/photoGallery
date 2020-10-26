@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrator control panel</title>
+</head>
+<body>
+<div>
+    <h3>Upload files</h3>
+    <form id="uploadFiles" name="uploadFiles" method="post" th:action="@{/admin/uploadFiles}"
+          enctype="multipart/form-data">
+        <input type="file" name="files" multiple required/>
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+<div>
+    <h3>Galleries</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>UserName</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="gallery:${photoGalleryList}">
+            <td th:text="${gallery.id}"></td>
+            <td th:text="${gallery.owner.username}"></td>
+            <td><a th:href="@{/admin/addPhotos/{galleryId}(galleryId=${gallery.id})}">Add photos</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h3>Add gallery</h3>
+    <form id="addGallery" name="addGallery" method="post" th:action="@{/admin/addGallery}" th:object="${photoGallery}"
+          enctype="multipart/form-data">
+        <select th:field="*{owner.username}">
+            <option th:each="user:${userList}"
+                    th:value="${user.username}"
+                    th:text="${user.username}"></option>
+        </select>
+        <button type="submit">Create gallery</button>
+    </form>
+</div>
+</body>
+</html>

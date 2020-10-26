@@ -10,6 +10,7 @@ import pl.uracz.photoGallery.service.UserService;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,11 +33,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void saveUser(User user) {
+  public void save(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setEnabled(1);
-    Role userRole = roleRepository.findByName("ROLE_USER");
-    user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
     userRepository.save(user);
+  }
+
+  @Override
+  public void saveUser(User user) {
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setEnabled(0);
+    Role userRole = roleRepository.findByName("ROLE_USER");
+    user.setRoles(new HashSet<>(Arrays.asList(userRole)));
+    userRepository.save(user);
+  }
+
+  @Override
+  public List<User> findAllByRoleUser() {
+    return userRepository.findAllByRoleUser();
   }
 }

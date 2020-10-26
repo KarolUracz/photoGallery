@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adding photos</title>
+</head>
+<body>
+<h3>Add photos</h3>
+<form method="post" th:object="${galleryToUpdate}" th:action="@{/admin/addPhotos}" enctype="multipart/form-data">
+    <input type="hidden" th:value="${galleryToUpdate.id}" th:field="*{id}"/>
+    <input type="hidden" th:value="${galleryToUpdate.galleryName}" th:field="*{galleryName}">
+    <input type="hidden" th:value="${galleryToUpdate.owner}" th:field="*{owner}">
+    <input type="file" name="files" multiple required/>
+    <button type="submit">Upload photos</button>
+</form>
+</body>
+</html>

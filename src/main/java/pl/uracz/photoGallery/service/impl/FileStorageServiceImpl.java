@@ -4,9 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pl.uracz.photoGallery.entity.Image;
+import pl.uracz.photoGallery.entity.PhotoGallery;
 import pl.uracz.photoGallery.exception.FileStorageException;
 import pl.uracz.photoGallery.service.FileStorageService;
 import pl.uracz.photoGallery.service.ImageService;
+import pl.uracz.photoGallery.service.PhotoGalleryService;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,9 +24,11 @@ public class FileStorageServiceImpl implements FileStorageService {
     private String uploadDir = "src/main/resources/static";
 
     private ImageService imageService;
+    private PhotoGalleryService photoGalleryService;
 
-    public FileStorageServiceImpl(ImageService imageService) {
+    public FileStorageServiceImpl(ImageService imageService, PhotoGalleryService photoGalleryService) {
         this.imageService = imageService;
+        this.photoGalleryService = photoGalleryService;
     }
 
     public void createGalleryDirectory(String username) {
@@ -39,14 +43,16 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public Image storeFile(MultipartFile file, String username) {
+    public Image storeFile(MultipartFile file, PhotoGallery photoGallery) {
         Image image = new Image();
         try {
             Path copyLocation = Paths
-                    .get(uploadDir + File.separator + username + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+                    .get(uploadDir + File.separator + photoGallery.getOwner().getUsername() + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+            Path imagePath = Paths.get(File.separator + photoGallery.getOwner().getUsername() + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
             Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
-            image.setUrl(copyLocation.toString());
-            imageService.saveImage(copyLocation.toString());
+            image.setUrl(imagePath.toString());
+            image.setPhotoGallery(photoGallery);
+            imageService.saveImage(imagePath.toString(), photoGallery);
         } catch (Exception e) {
             e.printStackTrace();
             throw new FileStorageException("Could not store file " + file.getOriginalFilename());

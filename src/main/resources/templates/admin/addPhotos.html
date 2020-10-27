@@ -6,6 +6,10 @@
 </head>
 <body>
 <h3>Add photos</h3>
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="submit" value="Logout"/>
+</form>
 <form method="post" th:object="${galleryToUpdate}" th:action="@{/admin/addPhotos}" enctype="multipart/form-data">
     <input type="hidden" th:value="${galleryToUpdate.id}" th:field="*{id}"/>
     <input type="hidden" th:value="${galleryToUpdate.galleryName}" th:field="*{galleryName}">
@@ -13,5 +17,6 @@
     <input type="file" name="files" multiple required/>
     <button type="submit">Upload photos</button>
 </form>
+<a href="/admin/panel">Wstecz</a>
 </body>
 </html>

@@ -6,6 +6,11 @@
 </head>
 <body>
 <h2>Administrator panel</h2>
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="submit" value="Logout"/>
+</form>
+
 <div>
     <h3>Galleries</h3>
     <table>

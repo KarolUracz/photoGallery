@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>User panel</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h3>Photo gallery</h3>
-<th:block th:each="image:${photoGallery.images}">
-    <div class="row">
-        <div class="column">
-            <img th:src="${image.url}" style="width:100%">
-        </div>
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="submit" value="Logout"/>
+</form>
+
+<div class="wrapper">
+    <div class="img-area" th:each="image:${images.images}">
+        <div class="single-img"><img th:src="@{${image.url}}" style="width:500px;height:600px;"></div>
     </div>
-</th:block>>
+<!--   <img th:src="@{/user/frank-oberle-Xfj32jnXCYw-unsplash.jpg}"/>-->
+</div>
 </body>
 </html>

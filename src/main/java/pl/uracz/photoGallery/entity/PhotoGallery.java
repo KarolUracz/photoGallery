@@ -14,7 +14,7 @@ public class PhotoGallery {
     private String galleryName;
     @OneToOne
     private User owner;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "photoGallery")
     private Set<Image> images = new HashSet<>();
 
     public Long getId() {

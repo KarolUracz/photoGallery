@@ -65,7 +65,7 @@ public class AdminController {
                             @ModelAttribute PhotoGallery photoGallery,
                             @RequestParam MultipartFile[] files) {
         for (MultipartFile file : files) {
-            Image image = fileStorageService.storeFile(file, photoGallery.getOwner().getUsername());
+            Image image = fileStorageService.storeFile(file, photoGallery);
             photoGallery.addImages(image);
         }
         return "redirect:/admin/panel";

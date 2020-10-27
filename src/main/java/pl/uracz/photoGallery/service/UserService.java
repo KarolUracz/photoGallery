@@ -14,4 +14,6 @@ public interface UserService {
 
     List<User> findAllByRoleUser();
 
+    List<User> findAllWithoutGallery();
+
 }

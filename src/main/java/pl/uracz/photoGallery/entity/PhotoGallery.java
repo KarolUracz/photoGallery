@@ -2,6 +2,7 @@ package pl.uracz.photoGallery.entity;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,10 +12,10 @@ public class PhotoGallery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String galleryName;
-    @ManyToOne
+    @OneToOne
     private User owner;
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Image> images;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id")
+    private Set<Image> images = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -28,6 +29,7 @@ public class PhotoGallery {
         return galleryName;
     }
 
+    @PrePersist
     public void setGalleryName() {
         this.galleryName = owner.getUsername();
     }
@@ -46,5 +48,9 @@ public class PhotoGallery {
 
     public void setImages(Set<Image> images) {
         this.images = images;
+    }
+
+    public void addImages(Image image) {
+        images.add(image);
     }
 }

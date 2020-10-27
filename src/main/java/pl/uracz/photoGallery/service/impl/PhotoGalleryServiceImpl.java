@@ -8,7 +8,6 @@ import pl.uracz.photoGallery.repository.UserRepository;
 import pl.uracz.photoGallery.service.PhotoGalleryService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PhotoGalleryServiceImpl implements PhotoGalleryService {
@@ -37,5 +36,10 @@ public class PhotoGalleryServiceImpl implements PhotoGalleryService {
     public PhotoGallery findById(String galleryId) {
         long galleryIdToSearch = Long.parseLong(galleryId);
         return photoGalleryRepository.findById(galleryIdToSearch).orElse(null);
+    }
+
+    @Override
+    public PhotoGallery findByOwner_Username(String username) {
+        return photoGalleryRepository.findByOwner_Username(username);
     }
 }

@@ -6,6 +6,7 @@ import pl.uracz.photoGallery.entity.Role;
 import pl.uracz.photoGallery.entity.User;
 import pl.uracz.photoGallery.repository.RoleRepository;
 import pl.uracz.photoGallery.repository.UserRepository;
+import pl.uracz.photoGallery.service.PhotoGalleryService;
 import pl.uracz.photoGallery.service.UserService;
 
 import java.util.Arrays;
@@ -18,13 +19,15 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final BCryptPasswordEncoder passwordEncoder;
+  private final PhotoGalleryService photoGalleryService;
 
   public UserServiceImpl(UserRepository userRepository,
-      RoleRepository roleRepository,
-      BCryptPasswordEncoder passwordEncoder) {
+                         RoleRepository roleRepository,
+                         BCryptPasswordEncoder passwordEncoder, PhotoGalleryService photoGalleryService) {
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
     this.passwordEncoder = passwordEncoder;
+    this.photoGalleryService = photoGalleryService;
   }
 
   @Override
@@ -42,14 +45,22 @@ public class UserServiceImpl implements UserService {
   @Override
   public void saveUser(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    user.setEnabled(0);
+    user.setEnabled(1);
     Role userRole = roleRepository.findByName("ROLE_USER");
-    user.setRoles(new HashSet<>(Arrays.asList(userRole)));
+    user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
     userRepository.save(user);
   }
 
   @Override
   public List<User> findAllByRoleUser() {
     return userRepository.findAllByRoleUser();
+  }
+
+  @Override
+  public List<User> findAllWithoutGallery() {
+    List<User> allWithGallery = userRepository.findAllWithGallery();
+    List<User> allByRoleUser = userRepository.findAllByRoleUser();
+    allByRoleUser.removeAll(allWithGallery);
+    return allByRoleUser;
   }
 }

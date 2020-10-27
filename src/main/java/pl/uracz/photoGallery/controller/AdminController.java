@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pl.uracz.photoGallery.entity.Image;
 import pl.uracz.photoGallery.entity.PhotoGallery;
 import pl.uracz.photoGallery.entity.User;
 import pl.uracz.photoGallery.model.CurrentUser;
@@ -30,20 +31,18 @@ public class AdminController {
     }
 
     @GetMapping("/panel")
-    public String adminPanel(@AuthenticationPrincipal CurrentUser currentUser, Model model) {
+    public String adminPanel(@AuthenticationPrincipal CurrentUser currentUser,
+                             Model model) {
         model.addAttribute("admin", currentUser.getUsername());
         model.addAttribute("photoGallery", new PhotoGallery());
+        model.addAttribute("user", new User());
+        model.addAttribute("userList", userService.findAllWithoutGallery());
         return "/admin/panel";
     }
 
     @ModelAttribute
     public List<PhotoGallery> galleries() {
         return photoGalleryService.findAll();
-    }
-
-    @ModelAttribute
-    public List<User> users() {
-        return userService.findAllByRoleUser();
     }
 
     @PostMapping("/addGallery")
@@ -66,8 +65,16 @@ public class AdminController {
                             @ModelAttribute PhotoGallery photoGallery,
                             @RequestParam MultipartFile[] files) {
         for (MultipartFile file : files) {
-            fileStorageService.storeFile(file, photoGallery.getOwner().getUsername());
+            Image image = fileStorageService.storeFile(file, photoGallery.getOwner().getUsername());
+            photoGallery.addImages(image);
         }
+        return "redirect:/admin/panel";
+    }
+
+    @PostMapping("/addUser")
+    public String addUser(@AuthenticationPrincipal CurrentUser currentUser,
+                          @ModelAttribute User user) {
+        userService.saveUser(user);
         return "redirect:/admin/panel";
     }
 }

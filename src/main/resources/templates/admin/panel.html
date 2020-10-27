@@ -5,7 +5,7 @@
     <title>Administrator control panel</title>
 </head>
 <body>
-
+<h2>Administrator panel</h2>
 <div>
     <h3>Galleries</h3>
     <table>
@@ -30,12 +30,30 @@
     <h3>Add gallery</h3>
     <form id="addGallery" name="addGallery" method="post" th:action="@{/admin/addGallery}" th:object="${photoGallery}"
           enctype="multipart/form-data">
-        <select th:field="*{owner.username}">
-            <option th:each="user:${userList}"
-                    th:value="${user.username}"
-                    th:text="${user.username}"></option>
-        </select>
+        <div>
+            <label>Select user to create gallery:</label>
+            <select th:field="*{owner.username}">
+                <option th:each="user:${userList}"
+                        th:value="${user.username}"
+                        th:text="${user.username}"></option>
+            </select>
+        </div>
         <button type="submit">Create gallery</button>
+    </form>
+</div>
+
+<div>
+    <h3>Create user</h3>
+    <form id="addUser" name="addUser" method="post" th:action="@{/admin/addUser}" th:object="${user}">
+        <div>
+            <label>Enter Username:</label>
+            <input type="text" th:field="${user.username}">
+        </div>
+        <div>
+            <label>Enter user password:</label>
+            <input type="password" th:field="${user.password}">
+        </div>
+        <button type="submit">Create user</button>
     </form>
 </div>
 </body>

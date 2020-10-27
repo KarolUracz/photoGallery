@@ -11,4 +11,6 @@ public interface PhotoGalleryService {
     void save(PhotoGallery photoGallery);
 
     PhotoGallery findById(String galleryId);
+
+    PhotoGallery findByOwner_Username(String username);
 }

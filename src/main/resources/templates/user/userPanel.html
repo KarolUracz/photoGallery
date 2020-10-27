@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User panel</title>
+</head>
+<body>
+<h3>Photo gallery</h3>
+<th:block th:each="image:${photoGallery.images}">
+    <div class="row">
+        <div class="column">
+            <img th:src="${image.url}" style="width:100%">
+        </div>
+    </div>
+</th:block>>
+</body>
+</html>
